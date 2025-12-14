@@ -1,45 +1,37 @@
+const fs = require('fs');
+const path = require('path');
 const Order = require('../models/order.model');
 
 exports.createOrder = async (req, res) => {
   try {
-    const { full_name, email, phone, order_details } = req.body;
+    const { full_name, email, phone, order_details, payment_image } = req.body;
 
-    console.log('--- Création commande ---');
-    console.log('BODY:', req.body);
-    console.log('FILE:', req.file);
-    console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
-
-    if (!req.file) {
-      console.log('Aucun fichier uploadé !');
+    if (!payment_image) {
       return res.status(400).json({ message: "Image requise" });
     }
+
+    // Décoder Base64
+    const base64Data = payment_image.replace(/^data:image\/\w+;base64,/, '');
+    const buffer = Buffer.from(base64Data, 'base64');
+
+    const filename = `${Date.now()}.png`;
+    const filePath = path.join(__dirname, '../uploads', filename);
+
+    fs.writeFileSync(filePath, buffer);
 
     const orderData = {
       full_name,
       email,
       phone,
       order_details,
-      payment_image: req.file.filename
+      payment_image: filename
     };
-
-    console.log('Données de la commande à insérer :', orderData);
 
     const result = await Order.createOrder(orderData);
 
-    if (!result || !result.rows || result.rows.length === 0) {
-      console.log('Aucune commande créée dans la DB');
-      return res.status(500).json({ message: "Erreur lors de la création de la commande" });
-    }
-
-    console.log('Commande créée avec succès :', result.rows[0]);
-
-    res.status(201).json({
-      message: "Commande enregistrée",
-      order: result.rows[0]
-    });
-
+    res.status(201).json({ message: "Commande enregistrée", order: result.rows[0] });
   } catch (err) {
-    console.error('Erreur lors de la création de la commande :', err);
+    console.error(err);
     res.status(500).json({ message: "Erreur serveur" });
   }
 };

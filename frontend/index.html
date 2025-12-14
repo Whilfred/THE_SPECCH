@@ -16,51 +16,37 @@
       <p class="mb-6 text-gray-600">Choisis ton plat et découvre les détails 👇</p>
 
       <div class="grid sm:grid-cols-2 gap-4">
-
-        <!-- Plat 1 -->
-        <div class="border rounded-xl overflow-hidden shadow hover:shadow-lg transition">
-          <img src="assets/poulet-au-riz.jpeg" alt="Riz poulet" class="w-full h-40 object-cover">
-          <div class="p-3">
-            <div class="flex justify-between items-center">
-              <h3 class="font-semibold">Riz + poulet</h3>
-              <input type="checkbox" value="Riz + poulet - 2000 F" class="plat">
-            </div>
+        <div class="border rounded-xl overflow-hidden shadow">
+          <img src="assets/poulet-au-riz.jpeg" class="w-full h-40 object-cover">
+          <div class="p-3 flex justify-between">
+            <h3>Riz + poulet</h3>
+            <input type="checkbox" value="Riz + poulet - 2000 F" class="plat">
           </div>
         </div>
 
-        <!-- Plat 2 -->
-        <div class="border rounded-xl overflow-hidden shadow hover:shadow-lg transition">
-          <img src="assets/Attike_poisson.webp" alt="Attiéké poisson" class="w-full h-40 object-cover">
-          <div class="p-3">
-            <div class="flex justify-between items-center">
-              <h3 class="font-semibold">Attiéké + poisson</h3>
-              <input type="checkbox" value="Attiéké + poisson - 1500 F" class="plat">
-            </div>
+        <div class="border rounded-xl overflow-hidden shadow">
+          <img src="assets/Attike_poisson.webp" class="w-full h-40 object-cover">
+          <div class="p-3 flex justify-between">
+            <h3>Attiéké + poisson</h3>
+            <input type="checkbox" value="Attiéké + poisson - 1500 F" class="plat">
           </div>
         </div>
 
-        <!-- Plat 3 -->
-        <div class="border rounded-xl overflow-hidden shadow hover:shadow-lg transition">
-          <img src="assets/frite_au_poulet.jpg" alt="Frite poulet" class="w-full h-40 object-cover">
-          <div class="p-3">
-            <div class="flex justify-between items-center">
-              <h3 class="font-semibold">Frite au poulet</h3>
-              <input type="checkbox" value="Frite au poulet - 2500 F" class="plat">
-            </div>
+        <div class="border rounded-xl overflow-hidden shadow">
+          <img src="assets/frite_au_poulet.jpg" class="w-full h-40 object-cover">
+          <div class="p-3 flex justify-between">
+            <h3>Frite au poulet</h3>
+            <input type="checkbox" value="Frite au poulet - 2500 F" class="plat">
           </div>
         </div>
 
-        <!-- Plat 4 -->
-        <div class="border rounded-xl overflow-hidden shadow hover:shadow-lg transition">
-          <img src="assets/chawarma.jpg" alt="Chawarma" class="w-full h-40 object-cover">
-          <div class="p-3">
-            <div class="flex justify-between items-center">
-              <h3 class="font-semibold">Chawarma</h3>
-              <input type="checkbox" value="Chawarma - 1500 F" class="plat">
-            </div>
+        <div class="border rounded-xl overflow-hidden shadow">
+          <img src="assets/chawarma.jpg" class="w-full h-40 object-cover">
+          <div class="p-3 flex justify-between">
+            <h3>Chawarma</h3>
+            <input type="checkbox" value="Chawarma - 1500 F" class="plat">
           </div>
         </div>
-
       </div>
     </div>
 
@@ -68,46 +54,14 @@
     <div>
       <h2 class="text-xl font-semibold mb-4">Validation de commande</h2>
 
-      <form
-        id="orderForm"
-        class="space-y-4"
-        enctype="multipart/form-data"
-      >
+      <form id="orderForm" class="space-y-4">
+        <input name="full_name" placeholder="Nom complet" required class="w-full border p-2">
+        <input name="email" placeholder="Email" required class="w-full border p-2">
+        <input name="phone" placeholder="Téléphone" required class="w-full border p-2">
+        <input name="payment_image" type="file" required accept="image/*">
+        <textarea id="resume" readonly class="w-full border p-2 bg-gray-50"></textarea>
 
-        <div>
-          <label class="block text-sm font-medium">Nom complet</label>
-          <input name="full_name" required type="text" class="w-full border rounded-lg p-2">
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium">Email</label>
-          <input name="email" required type="email" class="w-full border rounded-lg p-2">
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium">Téléphone</label>
-          <input name="phone" required type="tel" class="w-full border rounded-lg p-2">
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium">Photo du paiement</label>
-          <input name="payment_image" required type="file" accept="image/*">
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium">Commande sélectionnée</label>
-          <textarea
-            name="order_details"
-            id="resume"
-            readonly
-            class="w-full border rounded-lg p-2 bg-gray-50"
-          ></textarea>
-        </div>
-
-        <button
-          type="submit"
-          class="w-full bg-yellow-600 text-white p-3 rounded-xl hover:bg-yellow-700 transition"
-        >
+        <button class="w-full bg-yellow-600 text-white p-3 rounded-xl">
           Valider la commande
         </button>
       </form>
@@ -122,46 +76,78 @@ const plats = document.querySelectorAll('.plat');
 const resume = document.getElementById('resume');
 const form = document.getElementById('orderForm');
 
-plats.forEach(p => {
+// Mise à jour des plats sélectionnés
+plats.forEach((p) => {
   p.addEventListener('change', () => {
     const selected = [];
-    plats.forEach(item => {
-      if (item.checked) selected.push(item.value);
+    plats.forEach((item) => {
+      if (item.checked) {
+        selected.push(item.value);
+      }
     });
     resume.value = selected.join('\n');
-    console.log('Plats sélectionnés :', resume.value); // LOG
+    console.log('🧾 Plats sélectionnés:', resume.value);
   });
 });
 
-form.addEventListener('submit', async (e) => {
+// Soumission du formulaire
+form.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const formData = new FormData(form);
+  const fileInput = form.payment_image;
+  const file = fileInput.files[0];
 
-  try {
-    const response = await fetch('http://localhost:5000/api/orders', {
-      method: 'POST',
-      body: formData
-    });
+  console.log('📷 Fichier image:', file);
 
-    console.log('Status HTTP:', response.status);
-    console.log('Status OK:', response.ok);
-
-    const data = await response.json();
-    console.log('Réponse serveur :', data);
-
-    // On ne se fie plus uniquement à response.ok
-    if (response.status !== 201) {
-      console.error('Erreur côté serveur :', data.message);
-      throw new Error(data.message || 'Erreur inconnue');
-    }
-
-    document.getElementById('success').classList.remove('hidden');
-    form.reset();
-    resume.value = '';
-
-  } catch (err) {
+  if (!file) {
+    alert('Image requise');
+    return;
   }
+
+  const reader = new FileReader();
+
+  reader.onload = async function () {
+    const payload = {
+      full_name: form.full_name.value,
+      email: form.email.value,
+      phone: form.phone.value,
+      order_details: resume.value,
+      payment_image: reader.result
+    };
+
+    console.log('📤 PAYLOAD ENVOYÉ:', payload);
+    console.log('📏 Taille image Base64:', payload.payment_image.length);
+
+    try {
+      const response = await fetch('https://the-specch-1.onrender.com/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      console.log('📥 HTTP STATUS:', response.status);
+
+      const data = await response.json();
+      console.log('📥 RÉPONSE BACKEND:', data);
+
+      if (response.status !== 201) {
+        alert(data.message || 'Erreur serveur');
+        return;
+      }
+
+      document.getElementById('success').classList.remove('hidden');
+      form.reset();
+      resume.value = '';
+
+    } catch (error) {
+      console.error('❌ Erreur FETCH:', error);
+      alert('Erreur lors de l’envoi de la commande');
+    }
+  };
+
+  reader.readAsDataURL(file);
 });
 </script>
 

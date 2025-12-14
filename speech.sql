@@ -1,0 +1,9 @@
+CREATE TABLE orders (
+  id SERIAL PRIMARY KEY,
+  full_name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  phone VARCHAR(30) NOT NULL,
+  order_details TEXT NOT NULL,
+  payment_image VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
